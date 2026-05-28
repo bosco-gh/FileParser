@@ -8,6 +8,8 @@
         #chat-messages { height: 200px; overflow-y: auto; border: 1px solid #eee; margin-bottom: 10px; padding: 5px; background: #fafafa; }
         #chat-input { width: 80%; }
         #chatbox button { width: 18%; }
+        .charts-container { display: flex; gap: 40px; margin-top: 40px; }
+        .chart-box { width: 500px; }
     </style>
 </head>
 <body>
@@ -31,7 +33,86 @@
         <input type="text" id="chat-input" placeholder="Type your message...">
         <button onclick="sendMessage()">Send</button>
     </div>
+
+    <div class="charts-container">
+        <div class="chart-box">
+            <h2>Log Level Distribution</h2>
+            <div id="log-level-chart"></div>
+        </div>
+        <div class="chart-box">
+            <h2>Log Level Heatmap</h2>
+            <div id="log-level-heatmap"></div>
+        </div>
+        <div class="chart-box">
+            <h2>Log Trendline</h2>
+            <div id="log-trendline"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
+    function renderLogLevelChart() {
+        fetch('/log-level-counts')
+            .then(response => response.json())
+            .then(data => {
+                var levels = Object.keys(data);
+                var counts = Object.values(data);
+                var trace = {
+                    x: levels,
+                    y: counts,
+                    type: 'bar'
+                };
+                var layout = {
+                    title: 'Log Level Distribution',
+                    xaxis: { title: 'Log Level' },
+                    yaxis: { title: 'Count' }
+                };
+                Plotly.newPlot('log-level-chart', [trace], layout);
+            });
+    }
+    function renderLogLevelHeatmap() {
+        fetch('/log-level-heatmap')
+            .then(response => response.json())
+            .then(data => {
+                var levels = Object.keys(data);
+                var hours = Array.from({length: 24}, (_, i) => i.toString().padStart(2, '0'));
+                var z = levels.map(level => hours.map(hour => data[level][hour] || 0));
+                var trace = {
+                    z: z,
+                    x: hours,
+                    y: levels,
+                    type: 'heatmap',
+                    colorscale: 'Viridis'
+                };
+                var layout = {
+                    title: 'Log Level Heatmap (Hour of Day)',
+                    xaxis: { title: 'Hour' },
+                    yaxis: { title: 'Log Level' }
+                };
+                Plotly.newPlot('log-level-heatmap', [trace], layout);
+            });
+    }
+    function renderLogTrendline() {
+        fetch('/log-trendline')
+            .then(response => response.json())
+            .then(data => {
+                var trace = {
+                    x: data.dates,
+                    y: data.counts,
+                    type: 'scatter',
+                    mode: 'lines+markers'
+                };
+                var layout = {
+                    title: 'Log Entries Over Time',
+                    xaxis: { title: 'Date' },
+                    yaxis: { title: 'Log Count' }
+                };
+                Plotly.newPlot('log-trendline', [trace], layout);
+            });
+    }
+    renderLogLevelChart();
+    renderLogLevelHeatmap();
+    renderLogTrendline();
     function sendMessage() {
         var input = document.getElementById('chat-input');
         var message = input.value.trim();
