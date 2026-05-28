@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from controllers.log_controller import LogController
 import os
 import requests
-from helpers.log_db_helper import count_info_logs, count_logs_by_level
+from helpers.log_db_helper import count_info_logs, count_logs_by_level, get_log_level_counts, get_log_level_heatmap, get_log_trendline
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with a secure key in production
@@ -27,6 +27,21 @@ def upload_log():
             flash('Log file processed and data inserted into SQLite database.')
             return redirect(url_for('upload_log'))
     return render_template('upload_log.html')
+
+@app.route('/log-level-counts')
+def log_level_counts():
+    data = get_log_level_counts()
+    return jsonify(data)
+
+@app.route('/log-level-heatmap')
+def log_level_heatmap():
+    data = get_log_level_heatmap()
+    return jsonify(data)
+
+@app.route('/log-trendline')
+def log_trendline():
+    data = get_log_trendline()
+    return jsonify(data)
 
 @app.route('/chat', methods=['POST'])
 def chat():

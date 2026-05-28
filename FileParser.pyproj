@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7d5c33f0-bf2e-4bc5-882b-dfc9a32506df</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>FileParser.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,13 +25,14 @@
     <Compile Include="app.py" />
     <Compile Include="controllers\log_controller.py" />
     <Compile Include="data\database.py" />
-    <Compile Include="FileParser.py" />
+    <Compile Include="helpers\log_db_helper.py" />
     <Compile Include="models\log_entry.py" />
     <Compile Include="views\upload_log.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="controllers\" />
     <Folder Include="data\" />
+    <Folder Include="helpers\" />
     <Folder Include="models\" />
     <Folder Include="templates\" />
     <Folder Include="views\" />
