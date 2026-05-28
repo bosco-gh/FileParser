@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Log File</title>
+    <style>
+        #chatbox { border: 1px solid #ccc; padding: 10px; width: 400px; margin-top: 30px; }
+        #chat-messages { height: 200px; overflow-y: auto; border: 1px solid #eee; margin-bottom: 10px; padding: 5px; background: #fafafa; }
+        #chat-input { width: 80%; }
+        #chatbox button { width: 18%; }
+    </style>
+</head>
+<body>
+    <h1>Upload Log File</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="logfile" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <div id="chatbox">
+        <div id="chat-messages"></div>
+        <input type="text" id="chat-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <script>
+    function sendMessage() {
+        var input = document.getElementById('chat-input');
+        var message = input.value.trim();
+        if (!message) return;
+        var chatMessages = document.getElementById('chat-messages');
+        chatMessages.innerHTML += '<div><b>You:</b> ' + message + '</div>';
+        input.value = '';
+        fetch('/chat', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: message})
+        })
+        .then(response => response.json())
+        .then(data => {
+            chatMessages.innerHTML += '<div><b>AI:</b> ' + data.response + '</div>';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    }
+    document.getElementById('chat-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+2026-05-27 09:58:12,001 INFO Application startup initiated 
+2026-05-27 09:58:12,045 DEBUG Loading configuration from config.yaml 
+2026-05-27 09:58:12,067 INFO Configuration loaded successfully 
+2026-05-27 09:58:12,089 INFO Establishing database connection 
+2026-05-27 09:58:12,112 WARN Database connection timeout – retrying 
+2026-05-27 09:58:12,145 INFO Database connection established 
+2026-05-27 09:58:12,167 INFO Starting background worker pool (size=4) 
+2026-05-27 09:58:12,190 DEBUG Worker #1 initialized 
+2026-05-27 09:58:12,213 DEBUG Worker #2 initialized 
+2026-05-27 09:58:12,236 DEBUG Worker #3 initialized 
+2026-05-27 09:58:12,259 DEBUG Worker #4 initialized 
+2026-05-27 09:58:12,282 INFO All workers started successfully 
+2026-05-27 09:58:13,001 INFO Processing incoming request: /api/v1/resource 
+2026-05-27 09:58:13,045 DEBUG Request payload: {"id":123,"action":"fetch"} 
+2026-05-27 09:58:13,078 INFO Querying database for id=123 
+2026-05-27 09:58:13,102 DEBUG DB query executed in 4.2ms 
+2026-05-27 09:58:13,124 INFO Sending response (200 OK) 
+2026-05-27 09:58:13,147 DEBUG Response payload: {"id":123,"status":"ok","data":{...}} 
+2026-05-27 09:58:14,001 INFO Graceful shutdown initiated 
+2026-05-27 09:58:14,023 INFO Stopping background workers 
+2026-05-27 09:58:14,045 INFO Worker #1 terminated 
+2026-05-27 09:58:14,067 INFO Worker #2 terminated 
+2026-05-27 09:58:14,089 INFO Worker #3 terminated 
+2026-05-27 09:58:14,111 INFO Worker #4 terminated 
+2026-05-27 09:58:14,133 INFO Database connection closed 
+2026-05-27 09:58:14,155 INFO Application shutdown complete 
